@@ -9,7 +9,7 @@ log = logging.getLogger()
 log.setLevel(logging.INFO)
 
 
-def lambda_handler(event: dict, _: Any) -> str:
+def lambda_handler(event: dict, _: Any) -> dict:
   """Lambda handler for conversion request.
 
   Parameters
