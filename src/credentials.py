@@ -4,7 +4,7 @@ from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 
 
-def get_client():
+def get_service():
   """Get API client from service account.
 
   Returns

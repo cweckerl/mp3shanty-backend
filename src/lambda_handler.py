@@ -1,23 +1,21 @@
 import json
 import logging
-from typing import Any
 
 from src.convert import convert
+from src.credentials import get_service
 from src.storage import get_url, upload
 
 log = logging.getLogger()
 log.setLevel(logging.INFO)
 
 
-def lambda_handler(event: dict, _: Any) -> dict:
+def lambda_handler(event: dict, _) -> dict:
   """Lambda handler for conversion request.
 
   Parameters
   ----------
   event: dict
     Input data to handler.
-  _: LambdaContext
-    Runtime information.
 
   Returns
   -------
@@ -29,8 +27,9 @@ def lambda_handler(event: dict, _: Any) -> dict:
   log.info(f"{video_id} received")
 
   path = convert(video_id, filename)
-  mp3_id = upload(path)
-  url = get_url(mp3_id)
+  service = get_service()
+  mp3_id = upload(service, path)
+  url = get_url(service, mp3_id)
 
   response = {
     "statusCode": 200,
