@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Tuple
 
 
-def utc_now() -> datetime: datetime.utcnow()
+def utc_now() -> datetime: return datetime.utcnow()
 
 
 def parse_date(date: str) -> Tuple[int, int, int]:

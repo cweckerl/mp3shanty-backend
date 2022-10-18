@@ -1,4 +1,11 @@
-from src.util import parse_date
+from datetime import datetime
+from src.util import parse_date, utc_now
+
+
+def test_utc_now():
+  date = utc_now()
+
+  assert isinstance(date, datetime)
 
 
 def test_parse_date_valid():
