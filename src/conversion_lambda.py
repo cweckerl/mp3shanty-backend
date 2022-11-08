@@ -23,10 +23,12 @@ def lambda_handler(event: dict, _) -> dict:
     Json response
   """
   video_id = event["queryStringParameters"]["video_id"]
-  filename = event["queryStringParameters"]["filename"]
+  title = event["queryStringParameters"]["title"]
+  artist = event["queryStringParameters"]["artist"]
+
   log.info(f"{video_id} received")
 
-  path = convert(video_id, filename)
+  path = convert(video_id, title, artist)
   service = get_service()
   mp3_id = upload(service, path)
   url = get_url(service, mp3_id)
