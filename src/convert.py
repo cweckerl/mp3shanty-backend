@@ -4,7 +4,7 @@ import subprocess
 from pytube import YouTube
 
 
-def convert(id: str, title: str, artist: str) -> str:
+def convert(id: str, title: str, artist: str, album: str = "") -> str:
   """Converts video ID to mp3.
 
   Parameters
@@ -12,9 +12,11 @@ def convert(id: str, title: str, artist: str) -> str:
   id : str
     Video ID.
   title : str
-    Title of track.
+    Title of the track.
   artist : str
-    Artist of track.
+    Artist of the track.
+  album : str, default=""
+    Album of the track.
 
   Returns
   -------
@@ -61,6 +63,7 @@ def convert(id: str, title: str, artist: str) -> str:
       "-metadata:s:v", 'title="Album cover"',
       "-metadata:s:v", 'comment="Cover (front)"',
       "-metadata", f"title={title}",
+      "-metadata", f"album={album}",
       "-metadata", f"artist={artist}",
       mp3_path,
     ],
