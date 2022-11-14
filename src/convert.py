@@ -33,7 +33,7 @@ def convert(id: str, title: str, artist: str, album: str = "") -> str:
   audio.download(filename=mp4_path)
 
   # /opt/bin/ffmpeg
-  subprocess.run(
+  p = subprocess.run(
     [
       "ffmpeg",
       "-y",
@@ -50,24 +50,40 @@ def convert(id: str, title: str, artist: str, album: str = "") -> str:
     stdout=subprocess.DEVNULL,
     stderr=subprocess.STDOUT,
   )
-  subprocess.run(
-    [
-      "ffmpeg",
-      "-y",
-      "-i", tmp_file_path,
-      "-i", cover_path,
-      "-map", "0:0",
-      "-map", "1:0",
-      "-c", "copy",
-      "-id3v2_version", "3",
-      "-metadata:s:v", 'title="Album cover"',
-      "-metadata:s:v", 'comment="Cover (front)"',
-      "-metadata", f"title={title}",
-      "-metadata", f"album={album}",
-      "-metadata", f"artist={artist}",
-      mp3_path,
-    ],
-    stdout=subprocess.DEVNULL,
-    stderr=subprocess.STDOUT,
-  )
+  if p.returncode != 0:
+    subprocess.run(
+      [
+        "ffmpeg",
+        "-y",
+        "-i", tmp_file_path,
+        "-c", "copy",
+        "-id3v2_version", "3",
+        "-metadata", f"title={title}",
+        "-metadata", f"artist={artist}",
+        mp3_path,
+      ],
+      stdout=subprocess.DEVNULL,
+      stderr=subprocess.STDOUT,
+    )
+  else:
+    subprocess.run(
+      [
+        "ffmpeg",
+        "-y",
+        "-i", tmp_file_path,
+        "-i", cover_path,
+        "-map", "0:0",
+        "-map", "1:0",
+        "-c", "copy",
+        "-id3v2_version", "3",
+        "-metadata:s:v", 'title="Album cover"',
+        "-metadata:s:v", 'comment="Cover (front)"',
+        "-metadata", f"title={title}",
+        "-metadata", f"album={album}",
+        "-metadata", f"artist={artist}",
+        mp3_path,
+      ],
+      stdout=subprocess.DEVNULL,
+      stderr=subprocess.STDOUT,
+    )
   return mp3_path
